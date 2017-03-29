@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hello World," />
+  <meta name="keywords" content="php," />
 
 
 
@@ -87,16 +87,16 @@
 
 
 
-<meta name="description" content="首先致敬 Hello World还是从wordprss搬出来了">
+<meta name="description" content="介绍几种psr标准，持续更新">
 <meta property="og:type" content="article">
-<meta property="og:title" content="第一篇博客">
-<meta property="og:url" content="http://outyua.github.io/2017/03/hello-world.html">
+<meta property="og:title" content="PHP代码风格 psr 标准">
+<meta property="og:url" content="http://outyua.github.io/2017/03/php-codestype-psr.html">
 <meta property="og:site_name" content="OUTYUA">
-<meta property="og:description" content="首先致敬 Hello World还是从wordprss搬出来了">
-<meta property="og:updated_time" content="2017-03-22T15:29:33.000Z">
+<meta property="og:description" content="介绍几种psr标准，持续更新">
+<meta property="og:updated_time" content="2017-03-29T01:00:32.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="第一篇博客">
-<meta name="twitter:description" content="首先致敬 Hello World还是从wordprss搬出来了">
+<meta name="twitter:title" content="PHP代码风格 psr 标准">
+<meta name="twitter:description" content="介绍几种psr标准，持续更新">
 
 
 
@@ -124,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://outyua.github.io/2017/03/hello-world.html"/>
+  <link rel="canonical" href="http://outyua.github.io/2017/03/php-codestype-psr.html"/>
 
 
 
 
 
-  <title> 第一篇博客 | OUTYUA </title>
+  <title> PHP代码风格 psr 标准 | OUTYUA </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -268,7 +268,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://outyua.github.io/2017/03/hello-world.html">
+    <link itemprop="mainEntityOfPage" href="http://outyua.github.io/2017/03/php-codestype-psr.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="王吕">
@@ -289,7 +289,7 @@
             
             
               
-                第一篇博客
+                PHP代码风格 psr 标准
               
             
           </h2>
@@ -304,8 +304,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-21T00:00:00+08:00">
-                2017-03-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-29T08:57:09+08:00">
+                2017-03-29
               </time>
             
 
@@ -345,9 +345,62 @@
       
 
       
-        <blockquote>
-<p>首先致敬 <code>Hello World</code><br>还是从wordprss搬出来了</p>
+        <p>介绍几种psr标准，持续更新</p>
+<a id="more"></a>
+<p>（红色字体是我在开发中没有使用的）</p>
+<h1 id="psr-1（基本风格）"><a href="#psr-1（基本风格）" class="headerlink" title="psr-1（基本风格）"></a>psr-1（基本风格）</h1><ol>
+<li>必须使用utf-8编码</li>
+<li>类名使用驼峰式  MyClass</li>
+<li>常量全大写 CONST_VAR</li>
+<li>方法名使用小驼峰 myFunction</li>
+</ol>
+<h1 id="psr-2（严格的风格）"><a href="#psr-2（严格的风格）" class="headerlink" title="psr-2（严格的风格）"></a>psr-2（严格的风格）</h1><ol>
+<li><span style="color: #ff0000;">缩进使用四个空格</span></li>
+<li>PHP文件必须使用Unix风格的换行符（LF），最后要有一个空行，不需要 <code>?&gt;</code>标签</li>
+<li>true、false、null等关键字要小写</li>
+<li>命名空间声明的后边加上空行，最后一个use命名空间后边也要加上一个空行</li>
+<li><span style="color: #ff0000;">类和方法定义的开始的大括号要换行写</span></li>
+<li>每个方法的参数（除了最后一个）后边要有一个逗号和空格</li>
+<li>类中的方法要声明可见性，即加上public、protected、private，私有方法名称前加上<code>_</code>，如果类是static，要写成public static xxxx</li>
+<li>控制结构的关键字后边要有空格，包括if、elseif、else、switch、case、while、do while、for、foreach、try、catch</li>
+</ol>
+<h1 id="psr-3（日志记录器）"><a href="#psr-3（日志记录器）" class="headerlink" title="psr-3（日志记录器）"></a>psr-3（日志记录器）</h1><blockquote>
+<p>这不是一个指导方针，而是一个接口，规定PHP日志记录器组件可以实现的方法</p>
+<p>（可以理解为就是为日志系统出了一个标准，让各种第三方日志系统对用户来说没有差别）</p>
+<p>符合这个标准的日志记录器，框架要做到两件事：</p>
+<ul>
+<li>日志功能委托给第三方库实现</li>
+<li>用户可以选择他们喜欢的日志记录器组件</li>
+</ul>
 </blockquote>
+<pre>符合这个标准的日志记录器组件，必须包含实现下边这个接口的类
+&lt;?php
+
+//$message是一个字符串，或者包含__toString()方法的对象
+//$context可选，是个数组，用来替换$message中的占位标记
+namespace Psr\Log;
+
+interface LogInterface
+{
+    public function emergency($message, array $context = array());
+    public function alert($message, array $context = array());
+    public function critical($message, array $context = array());
+    public function error($message, array $context = array());
+    public function warning($message, array $context = array());
+    public function notice($message, array $context = array());
+    public function info($message, array $context = array());
+    public function debug($message, array $context = array());
+    public function log($level, $message, array $context = array());
+}
+
+使用方法参考Monolog的使用方法
+
+</pre>
+
+<h1 id="psr-4（自动加载）！！非常重要"><a href="#psr-4（自动加载）！！非常重要" class="headerlink" title="psr-4（自动加载）！！非常重要"></a>psr-4（自动加载）！！非常重要</h1><blockquote>
+<p>自动加载策略依赖命名空间和文件系统<br>  命名空间要和文件目录保持一致</p>
+</blockquote>
+<p>想知道怎么实现么？算了，直接用<a href="http://www.phpcomposer.com" target="_blank" rel="external">composer</a>就好了</p>
 
       
     </div>
@@ -376,7 +429,7 @@
     </li>
     <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://outyua.github.io/2017/03/hello-world.html" title="第一篇博客">http://outyua.github.io/2017/03/hello-world.html</a>
+      <a href="http://outyua.github.io/2017/03/php-codestype-psr.html" title="PHP代码风格 psr 标准">http://outyua.github.io/2017/03/php-codestype-psr.html</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明： </strong>
@@ -392,7 +445,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Hello-World/" rel="tag"># Hello World</a>
+            <a href="/tags/php/" rel="tag"># php</a>
           
         </div>
       
@@ -405,15 +458,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/03/learn-protocol-buffers-7.html" rel="next" title="Protocol Buffers学习（7）：编译protocol buffers">
+                <i class="fa fa-chevron-left"></i> Protocol Buffers学习（7）：编译protocol buffers
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/03/add-404-page-to-hexo.html" rel="prev" title="为Hexo博客添加404页面">
-                为Hexo博客添加404页面 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -462,8 +515,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -536,6 +598,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#psr-1（基本风格）"><span class="nav-number">1.</span> <span class="nav-text">psr-1（基本风格）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#psr-2（严格的风格）"><span class="nav-number">2.</span> <span class="nav-text">psr-2（严格的风格）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#psr-3（日志记录器）"><span class="nav-number">3.</span> <span class="nav-text">psr-3（日志记录器）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#psr-4（自动加载）！！非常重要"><span class="nav-number">4.</span> <span class="nav-text">psr-4（自动加载）！！非常重要</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
