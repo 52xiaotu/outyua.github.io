@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Protocol Buffers," />
+  <meta name="keywords" content="trait,php," />
 
 
 
@@ -87,13 +87,19 @@
 
 
 
+<meta name="description" content="Trait（PHP5.4.0之后才支持）
+1、trait跟类相似，但是更轻便，想一下，如果A类和B类都需要一个获取地理位置的功能，我们通常的解决办法是写一个父类，里边定义一个获取地理位置的函数，然后A类和B类都继承它，缺点是让无关的类有了同一个父类，强制了AB的关联；还有一种解决办法是定义一个接口interface，A和B都实现这个接口，这样的缺点是，同样一个获取地理位置的功能要写两遍，不符合DR">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Protocol Buffers学习（3）：枚举类型">
-<meta property="og:url" content="http://outyua.github.io/2017/03/learn-protocol-buffers-3.html">
+<meta property="og:title" content="关于PHP trait、生成器">
+<meta property="og:url" content="http://outyua.github.io/2017/03/learning-php-trait-and-generater.html">
 <meta property="og:site_name" content="OUTYUA">
-<meta property="og:updated_time" content="2017-03-22T15:29:33.000Z">
+<meta property="og:description" content="Trait（PHP5.4.0之后才支持）
+1、trait跟类相似，但是更轻便，想一下，如果A类和B类都需要一个获取地理位置的功能，我们通常的解决办法是写一个父类，里边定义一个获取地理位置的函数，然后A类和B类都继承它，缺点是让无关的类有了同一个父类，强制了AB的关联；还有一种解决办法是定义一个接口interface，A和B都实现这个接口，这样的缺点是，同样一个获取地理位置的功能要写两遍，不符合DR">
+<meta property="og:updated_time" content="2017-03-29T01:05:25.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Protocol Buffers学习（3）：枚举类型">
+<meta name="twitter:title" content="关于PHP trait、生成器">
+<meta name="twitter:description" content="Trait（PHP5.4.0之后才支持）
+1、trait跟类相似，但是更轻便，想一下，如果A类和B类都需要一个获取地理位置的功能，我们通常的解决办法是写一个父类，里边定义一个获取地理位置的函数，然后A类和B类都继承它，缺点是让无关的类有了同一个父类，强制了AB的关联；还有一种解决办法是定义一个接口interface，A和B都实现这个接口，这样的缺点是，同样一个获取地理位置的功能要写两遍，不符合DR">
 
 
 
@@ -121,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://outyua.github.io/2017/03/learn-protocol-buffers-3.html"/>
+  <link rel="canonical" href="http://outyua.github.io/2017/03/learning-php-trait-and-generater.html"/>
 
 
 
 
 
-  <title> Protocol Buffers学习（3）：枚举类型 | OUTYUA </title>
+  <title> 关于PHP trait、生成器 | OUTYUA </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -265,7 +271,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://outyua.github.io/2017/03/learn-protocol-buffers-3.html">
+    <link itemprop="mainEntityOfPage" href="http://outyua.github.io/2017/03/learning-php-trait-and-generater.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="王吕">
@@ -286,7 +292,7 @@
             
             
               
-                Protocol Buffers学习（3）：枚举类型
+                关于PHP trait、生成器
               
             
           </h2>
@@ -301,8 +307,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-22T16:35:36+08:00">
-                2017-03-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-29T09:03:42+08:00">
+                2017-03-29
               </time>
             
 
@@ -342,22 +348,17 @@
       
 
       
-        <!-- info -->
+        <p><strong>Trait（PHP5.4.0之后才支持）</strong></p>
+<p>1、trait跟类相似，但是更轻便，想一下，如果A类和B类都需要一个获取地理位置的功能，我们通常的解决办法是写一个父类，里边定义一个获取地理位置的函数，然后A类和B类都继承它，缺点是让无关的类有了同一个父类，强制了AB的关联；还有一种解决办法是定义一个接口interface，A和B都实现这个接口，这样的缺点是，同样一个获取地理位置的功能要写两遍，不符合DRY（Dotn’t repeat yourself）原则；最后推荐使用trait，这更符合模块化的观念，实现如下</p>
 <a id="more"></a>
-<h2 id="首先我们看一个枚举类型的例子"><a href="#首先我们看一个枚举类型的例子" class="headerlink" title="首先我们看一个枚举类型的例子"></a>首先我们看一个枚举类型的例子</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">message SearchRequest &#123;</div><div class="line">  string query = 1;</div><div class="line">  int32 page_number = 2;</div><div class="line">  int32 result_per_page = 3;</div><div class="line">  enum Corpus &#123;</div><div class="line">    UNIVERSAL = 0;</div><div class="line">    WEB = 1;</div><div class="line">    IMAGES = 2;</div><div class="line">    LOCAL = 3;</div><div class="line">    NEWS = 4;</div><div class="line">    PRODUCTS = 5;</div><div class="line">    VIDEO = 6;</div><div class="line">  &#125;</div><div class="line">  Corpus corpus = 4;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>Corpus是一个枚举类型，并且枚举的第一个常量映射为<code>0</code>，每个枚举必须包含一个常量，<code>0</code>必须是第一个元素</p>
-<p>这样有两个好处</p>
-<ul>
-<li>0正好是数字类型的默认值</li>
-<li>0始终作为第一个元素，这样可以和<code>proto2</code>兼容</li>
-</ul>
-<h2 id="值重复问题"><a href="#值重复问题" class="headerlink" title="值重复问题"></a>值重复问题</h2><p>你可以为不同的枚举常量赋相同的值，但是要设置<code>allow_alias</code>为<code>true</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">enum EnumAllowingAlias &#123;</div><div class="line">  option allow_alias = true;</div><div class="line">  UNKNOWN = 0;</div><div class="line">  STARTED = 1;</div><div class="line">  RUNNING = 1;</div><div class="line">&#125;</div><div class="line">enum EnumNotAllowingAlias &#123;</div><div class="line">  UNKNOWN = 0;</div><div class="line">  STARTED = 1;</div><div class="line">  // RUNNING = 1;  // 取消这行的注释 会报错</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="更多说明"><a href="#更多说明" class="headerlink" title="更多说明"></a>更多说明</h2><ul>
-<li>枚举常量必须在32位整数范围内，因为枚举值线上使用<code>varint</code>编码，所以负值无效，不推荐在枚举中定义负值</li>
-<li>反序列化的时候，消息将保留不能识别的枚举值</li>
-</ul>
-<p>更多信息请参考<a href="https://developers.google.com/protocol-buffers/docs/reference/overview" target="_blank" rel="external">Google</a></p>
+<p>2、trait定义<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">trait Geo &#123;</div><div class="line">    protected $myAddress;</div><div class="line">    public function getAddress() &#123;</div><div class="line">        return $this-&gt;myAddress;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>3、使用trait<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">class A &#123;</div><div class="line">    use Geo;</div><div class="line">    //A类的实现</div><div class="line">&#125;</div><div class="line"></div><div class="line">class B &#123;</div><div class="line">    use Geo;</div><div class="line">    //B类的实现</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">$a = new A();</div><div class="line">$b = new B();</div><div class="line"></div><div class="line">$a-&gt;getAddress();    //A类获取地理位置</div><div class="line">$b-&gt;getAddress();    //B类获取地理位置</div></pre></td></tr></table></figure></p>
+<p>4、小结：</p>
+<p>其实trait就相当于一个可以放到类里的模块，有啥通用的部分可以提出来，放到trait里边，然后就不用在不同的类里重复实现了。</p>
+<p><strong>生成器（PHP5.5.0之后才支持）</strong></p>
+<p>1、生成器就是一个PHP函数，在一个函数中使用yield关键字，可以这样理解，yield是一个大数组，yield关键字在这个函数里每出现一次，就会在这个数组里加入一个元素，需要注意的是，生成器不需要返回值，只通过yield产出值，最终返回的是一个Generator对象（就是刚才那个大数组）。</p>
+<p>2、优点是占用内存小，下边是一个生成范围内数值的例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">//常规做法</div><div class="line">function makeRange($length) &#123;</div><div class="line">    $data = [];</div><div class="line">    for($i=0;$i&lt;$length;$i++) &#123;</div><div class="line">        $data[] = $i;</div><div class="line">    &#125;</div><div class="line">    return $data;</div><div class="line">&#125;</div><div class="line"></div><div class="line">//这样$arr会创建一个99999个元素的数组，这样会占用很大内存</div><div class="line">$arr = makeRange(99999);</div><div class="line">foreach($arr as $value) &#123;</div><div class="line">    echo $value;</div><div class="line">&#125;</div><div class="line"></div><div class="line">//使用生成器，这样只会在每次迭代的时候生成不同的元素，占用内存跟$length的长度没关系</div><div class="line">function makeRange($length) &#123;</div><div class="line">    for($i=0;$i&lt;$length;$i++) &#123;</div><div class="line">        yield $i;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">//这里不推荐把makeRange（）赋值给一个变量，这个变量是一个Generator对象，并不是我们理解的数组</div><div class="line">$arr = makeRange(999999);</div><div class="line">foreach($arr as $value) &#123;</div><div class="line">    echo $value;</div><div class="line">&#125;</div><div class="line"></div><div class="line">//&lt;span style=&quot;color: #ff0000;&quot;&gt;推荐写法&lt;/span&gt;</div><div class="line">foreach(makeRange(999999) as $value) &#123;</div><div class="line">    echo $value;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -386,7 +387,7 @@
     </li>
     <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://outyua.github.io/2017/03/learn-protocol-buffers-3.html" title="Protocol Buffers学习（3）：枚举类型">http://outyua.github.io/2017/03/learn-protocol-buffers-3.html</a>
+      <a href="http://outyua.github.io/2017/03/learning-php-trait-and-generater.html" title="关于PHP trait、生成器">http://outyua.github.io/2017/03/learning-php-trait-and-generater.html</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明： </strong>
@@ -402,7 +403,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Protocol-Buffers/" rel="tag"># Protocol Buffers</a>
+            <a href="/tags/trait/" rel="tag"># trait</a>
+          
+            <a href="/tags/php/" rel="tag"># php</a>
           
         </div>
       
@@ -415,8 +418,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/learn-protocol-buffers-2.html" rel="next" title="Protocol Buffers学习（2）：字段类型和其他语言字段类型之间的映射">
-                <i class="fa fa-chevron-left"></i> Protocol Buffers学习（2）：字段类型和其他语言字段类型之间的映射
+              <a href="/2017/03/php-codestype-psr.html" rel="next" title="PHP代码风格 psr 标准">
+                <i class="fa fa-chevron-left"></i> PHP代码风格 psr 标准
               </a>
             
           </div>
@@ -424,10 +427,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/03/learn-protocol-buffers-4.html" rel="prev" title="Protocol Buffers学习（4）：更多消息类型">
-                Protocol Buffers学习（4）：更多消息类型 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -476,17 +475,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -559,22 +549,6 @@
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#首先我们看一个枚举类型的例子"><span class="nav-number">1.</span> <span class="nav-text">首先我们看一个枚举类型的例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#值重复问题"><span class="nav-number">2.</span> <span class="nav-text">值重复问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更多说明"><span class="nav-number">3.</span> <span class="nav-text">更多说明</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
