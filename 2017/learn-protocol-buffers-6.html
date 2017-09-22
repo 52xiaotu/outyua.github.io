@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="OUTYUA" />
+  <meta name="keywords" content="Protocol Buffers," />
 
 
 
@@ -87,15 +87,19 @@
 
 
 
-<meta name="description" content="想到啥写啥吧">
-<meta property="og:type" content="website">
-<meta property="og:title" content="OUTYUA">
-<meta property="og:url" content="http://blog.outyua.com/archives/2017/index.html">
+<meta name="description" content=".proto文件中的单独声明可以使用多个选项进行注释。 选项不会更改声明的整体含义，但可能会影响其在特定上下文中的处理方式。 可用选项的完整列表在google/protobuf/descriptor.proto中定义。也就是说不同的选项可能只在编译某种语言时才会生效
+一些选项是文件级选项，这意味着它们应该写在顶级作用域中，而不是在任何消息，枚举或服务定义内。 一些选项是消息级选项，这意味着它们应该">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Protocol Buffers学习（6）：文件|字段选项介绍">
+<meta property="og:url" content="http://blog.outyua.com/2017/learn-protocol-buffers-6.html">
 <meta property="og:site_name" content="OUTYUA">
-<meta property="og:description" content="想到啥写啥吧">
+<meta property="og:description" content=".proto文件中的单独声明可以使用多个选项进行注释。 选项不会更改声明的整体含义，但可能会影响其在特定上下文中的处理方式。 可用选项的完整列表在google/protobuf/descriptor.proto中定义。也就是说不同的选项可能只在编译某种语言时才会生效
+一些选项是文件级选项，这意味着它们应该写在顶级作用域中，而不是在任何消息，枚举或服务定义内。 一些选项是消息级选项，这意味着它们应该">
+<meta property="og:updated_time" content="2017-03-29T00:51:55.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="OUTYUA">
-<meta name="twitter:description" content="想到啥写啥吧">
+<meta name="twitter:title" content="Protocol Buffers学习（6）：文件|字段选项介绍">
+<meta name="twitter:description" content=".proto文件中的单独声明可以使用多个选项进行注释。 选项不会更改声明的整体含义，但可能会影响其在特定上下文中的处理方式。 可用选项的完整列表在google/protobuf/descriptor.proto中定义。也就是说不同的选项可能只在编译某种语言时才会生效
+一些选项是文件级选项，这意味着它们应该写在顶级作用域中，而不是在任何消息，枚举或服务定义内。 一些选项是消息级选项，这意味着它们应该">
 
 
 
@@ -123,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://blog.outyua.com/archives/2017/"/>
+  <link rel="canonical" href="http://blog.outyua.com/2017/learn-protocol-buffers-6.html"/>
 
 
 
 
 
-  <title> 归档 | OUTYUA </title>
+  <title> Protocol Buffers学习（6）：文件|字段选项介绍 | OUTYUA </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -163,7 +167,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  page-archive  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -257,403 +261,214 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-    <span class="archive-page-counter">
-      
-      
-      
-        
-      
-      嗯..! 目前共计 17 篇日志。 继续努力。
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://blog.outyua.com/2017/learn-protocol-buffers-6.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="王吕">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OUTYUA">
     </span>
 
     
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                Protocol Buffers学习（6）：文件|字段选项介绍
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-23T15:35:43+08:00">
+                2017-03-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
 
       
       
-      
 
+      
+        <p><code>.proto</code>文件中的单独声明可以使用多个选项进行注释。 选项不会更改声明的整体含义，但可能会影响其在特定上下文中的处理方式。 可用选项的完整列表在<code>google/protobuf/descriptor.proto</code>中定义。也就是说不同的选项可能只在编译某种语言时才会生效</p>
+<p>一些选项是文件级选项，这意味着它们应该写在顶级作用域中，而不是在任何消息，枚举或服务定义内。 一些选项是消息级选项，这意味着它们应该写入消息定义内。 一些选项是字段级选项，这意味着它们应该写在字段定义中。 枚举类型，枚举值，服务类型和服务方式也可以选择选项。 然而，目前没有任何有用的选项</p>
+<p>以下是一些最常用的选项：</p>
+<p>（<strong>文件选项</strong>）</p>
+<ul>
+<li>java_package：这个选项可以在编译成java类代码是设置类名</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">option java_package = &quot;com.example.foo&quot;;</div></pre></td></tr></table></figure>
+<ul>
+<li>java_multiple_files：Causes top-level messages, enums, and services to be defined at the package level, rather than inside an outer class named after the .proto file.（有合适的理解请评论留言～）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">option java_multiple_files = true;</div></pre></td></tr></table></figure>
+<ul>
+<li>java_outer_classname : 要生成的最外层Java类的类名（因此是文件名）。 如果在<code>.proto</code>文件中没有指定明确的<code>java_outer_classname</code>，则通过将<code>.proto</code>文件名转换为<code>camel-case</code>来构造类名称（因此<code>foo_bar.proto</code>变为<code>FooBar.java</code>）。 如果不生成Java代码，则此选项不起作用。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">option java_outer_classname = &quot;Ponycopter&quot;;</div></pre></td></tr></table></figure>
+<ul>
+<li><p>optimize_for：可以设置为SPEED，CODE_SIZE或LITE_RUNTIME。 这将影响C ++和Java代码生成器（以及可能的第三方生成器），方法如下：</p>
+<ul>
+<li>SPEED (default): 高效的方式编译</li>
+<li>CODE_SIZE：生成的代码类最少，生成的总代码量也小，但是操作速度会变慢</li>
+<li>LITE_RUNTIME：编译器将会使用一个轻量的库，但是也会少一些功能，一般用在受限的平台上（比如：手机）。编译器仍将像SPEED模式一样生成所有方法的快速实现。 生成的类只会在每个语言中实现MessageLite接口，该接口仅提供完整Message接口的方法的一部分。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">option optimize_for = CODE_SIZE;</div></pre></td></tr></table></figure>
+<ul>
+<li>cc_enable_arenas：生成c++代码时开启<code>arena alloction</code></li>
+<li>objc_class_prefix：设置生成的Objective-C代码的前缀</li>
+</ul>
+<p>（<strong>字段选项</strong>）</p>
+<ul>
+<li>deprecated：标记以后，表示该字段已经弃用，不应该在新代码中使用，未来可能要替换掉</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">int32 old_field = 6 [deprecated=true];</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
       
         
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2017">2017</h2>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      王吕
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://blog.outyua.com/2017/learn-protocol-buffers-6.html" title="Protocol Buffers学习（6）：文件|字段选项介绍">http://blog.outyua.com/2017/learn-protocol-buffers-6.html</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Protocol-Buffers/" rel="tag"># Protocol Buffers</a>
+          
         </div>
       
+
+      
+        
       
 
       
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/learn-protocol-buffers-5.html" rel="next" title="Protocol Buffers学习（5）：在rpc中使用protobuf">
+                <i class="fa fa-chevron-left"></i> Protocol Buffers学习（5）：在rpc中使用protobuf
+              </a>
+            
+          </div>
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          <span class="post-nav-divider"></span>
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/learn-mysql-1.html" itemprop="url">
-              
-                <span itemprop="name">MySQL架构和历史</span>
-              
-            </a>
-        
-      </h2>
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/learn-protocol-buffers-7.html" rel="prev" title="Protocol Buffers学习（7）：编译protocol buffers">
+                Protocol Buffers学习（7）：编译protocol buffers <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-09-22T18:59:00+08:00"
-              content="2017-09-22" >
-          09-22
-        </time>
-      </div>
-
-    </header>
+      
+      
+    </footer>
   </article>
 
 
 
-    
-
+    <div class="post-spread">
       
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/Using-Repository-Pattern-in-Laravel-5.html" itemprop="url">
-              
-                <span itemprop="name">在 laravel5 中使用仓库设计模式</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-08-05T12:36:15+08:00"
-              content="2017-08-05" >
-          08-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/learning-php-trait-and-generater.html" itemprop="url">
-              
-                <span itemprop="name">关于PHP trait、生成器</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-29T09:03:42+08:00"
-              content="2017-03-29" >
-          03-29
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/php-codestype-psr.html" itemprop="url">
-              
-                <span itemprop="name">PHP代码风格 psr 标准</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-29T08:57:09+08:00"
-              content="2017-03-29" >
-          03-29
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/learn-protocol-buffers-7.html" itemprop="url">
-              
-                <span itemprop="name">Protocol Buffers学习（7）：编译protocol buffers</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-23T15:35:45+08:00"
-              content="2017-03-23" >
-          03-23
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/learn-protocol-buffers-6.html" itemprop="url">
-              
-                <span itemprop="name">Protocol Buffers学习（6）：文件|字段选项介绍</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-23T15:35:43+08:00"
-              content="2017-03-23" >
-          03-23
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/learn-protocol-buffers-5.html" itemprop="url">
-              
-                <span itemprop="name">Protocol Buffers学习（5）：在rpc中使用protobuf</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-23T15:35:39+08:00"
-              content="2017-03-23" >
-          03-23
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/learn-protocol-buffers-4.html" itemprop="url">
-              
-                <span itemprop="name">Protocol Buffers学习（4）：更多消息类型</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-22T21:58:30+08:00"
-              content="2017-03-22" >
-          03-22
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/learn-protocol-buffers-3.html" itemprop="url">
-              
-                <span itemprop="name">Protocol Buffers学习（3）：枚举类型</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-22T16:35:36+08:00"
-              content="2017-03-22" >
-          03-22
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/learn-protocol-buffers-2.html" itemprop="url">
-              
-                <span itemprop="name">Protocol Buffers学习（2）：字段类型和其他语言字段类型之间的映射</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-22T16:34:36+08:00"
-              content="2017-03-22" >
-          03-22
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-  </section>
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/2017/page/2/">2</a><a class="extend next" rel="next" href="/archives/2017/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
-
-
+    </div>
+  </div>
 
           
           </div>
@@ -661,6 +476,12 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yNzgxNi80Mzky"></div>
+    
+  </div>
+
 
         </div>
         
@@ -875,11 +696,9 @@
   
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
 
 
   

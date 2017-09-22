@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="OUTYUA" />
+  <meta name="keywords" content="php," />
 
 
 
@@ -87,15 +87,16 @@
 
 
 
-<meta name="description" content="想到啥写啥吧">
-<meta property="og:type" content="website">
-<meta property="og:title" content="OUTYUA">
-<meta property="og:url" content="http://blog.outyua.com/tags/php-framework/index.html">
+<meta name="description" content="介绍几种psr标准，持续更新">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP代码风格 psr 标准">
+<meta property="og:url" content="http://blog.outyua.com/2017/php-codestype-psr.html">
 <meta property="og:site_name" content="OUTYUA">
-<meta property="og:description" content="想到啥写啥吧">
+<meta property="og:description" content="介绍几种psr标准，持续更新">
+<meta property="og:updated_time" content="2017-03-29T01:00:32.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="OUTYUA">
-<meta name="twitter:description" content="想到啥写啥吧">
+<meta name="twitter:title" content="PHP代码风格 psr 标准">
+<meta name="twitter:description" content="介绍几种psr标准，持续更新">
 
 
 
@@ -123,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://blog.outyua.com/tags/php-framework/"/>
+  <link rel="canonical" href="http://blog.outyua.com/2017/php-codestype-psr.html"/>
 
 
 
 
 
-  <title> 标签: php framework | OUTYUA </title>
+  <title> PHP代码风格 psr 标准 | OUTYUA </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -163,7 +164,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -257,46 +258,235 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h2 >
-        php framework
-        <small>标签</small>
-      </h2>
-    </div>
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://blog.outyua.com/2017/php-codestype-psr.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="王吕">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OUTYUA">
+    </span>
 
     
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                PHP代码风格 psr 标准
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-29T08:57:09+08:00">
+                2017-03-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
       
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+      
+        <p>介绍几种psr标准，持续更新</p>
+<a id="more"></a>
+<p>（红色字体是我在开发中没有使用的）</p>
+<h1 id="psr-1（基本风格）"><a href="#psr-1（基本风格）" class="headerlink" title="psr-1（基本风格）"></a>psr-1（基本风格）</h1><ol>
+<li>必须使用utf-8编码</li>
+<li>类名使用驼峰式  MyClass</li>
+<li>常量全大写 CONST_VAR</li>
+<li>方法名使用小驼峰 myFunction</li>
+</ol>
+<h1 id="psr-2（严格的风格）"><a href="#psr-2（严格的风格）" class="headerlink" title="psr-2（严格的风格）"></a>psr-2（严格的风格）</h1><ol>
+<li><span style="color: #ff0000;">缩进使用四个空格</span></li>
+<li>PHP文件必须使用Unix风格的换行符（LF），最后要有一个空行，不需要 <code>?&gt;</code>标签</li>
+<li>true、false、null等关键字要小写</li>
+<li>命名空间声明的后边加上空行，最后一个use命名空间后边也要加上一个空行</li>
+<li><span style="color: #ff0000;">类和方法定义的开始的大括号要换行写</span></li>
+<li>每个方法的参数（除了最后一个）后边要有一个逗号和空格</li>
+<li>类中的方法要声明可见性，即加上public、protected、private，私有方法名称前加上<code>_</code>，如果类是static，要写成public static xxxx</li>
+<li>控制结构的关键字后边要有空格，包括if、elseif、else、switch、case、while、do while、for、foreach、try、catch</li>
+</ol>
+<h1 id="psr-3（日志记录器）"><a href="#psr-3（日志记录器）" class="headerlink" title="psr-3（日志记录器）"></a>psr-3（日志记录器）</h1><blockquote>
+<p>这不是一个指导方针，而是一个接口，规定PHP日志记录器组件可以实现的方法</p>
+<p>（可以理解为就是为日志系统出了一个标准，让各种第三方日志系统对用户来说没有差别）</p>
+<p>符合这个标准的日志记录器，框架要做到两件事：</p>
+<ul>
+<li>日志功能委托给第三方库实现</li>
+<li>用户可以选择他们喜欢的日志记录器组件</li>
+</ul>
+</blockquote>
+<pre>符合这个标准的日志记录器组件，必须包含实现下边这个接口的类
+&lt;?php
 
-      <h2 class="post-title">
+//$message是一个字符串，或者包含__toString()方法的对象
+//$context可选，是个数组，用来替换$message中的占位标记
+namespace Psr\Log;
+
+interface LogInterface
+{
+    public function emergency($message, array $context = array());
+    public function alert($message, array $context = array());
+    public function critical($message, array $context = array());
+    public function error($message, array $context = array());
+    public function warning($message, array $context = array());
+    public function notice($message, array $context = array());
+    public function info($message, array $context = array());
+    public function debug($message, array $context = array());
+    public function log($level, $message, array $context = array());
+}
+
+使用方法参考Monolog的使用方法
+
+</pre>
+
+<h1 id="psr-4（自动加载）！！非常重要"><a href="#psr-4（自动加载）！！非常重要" class="headerlink" title="psr-4（自动加载）！！非常重要"></a>psr-4（自动加载）！！非常重要</h1><blockquote>
+<p>自动加载策略依赖命名空间和文件系统<br>  命名空间要和文件目录保持一致</p>
+</blockquote>
+<p>想知道怎么实现么？算了，直接用<a href="http://www.phpcomposer.com" target="_blank" rel="external">composer</a>就好了</p>
+
+      
+    </div>
+
+    <div>
+      
         
-            <a class="post-title-link" href="/2017/some-benchmark-about-php-framework.html" itemprop="url">
-              
-                <span itemprop="name">几个流行PHP framework的benchmark简单测试</span>
-              
-            </a>
+
+      
+    </div>
+
+    <div>
+      
         
-      </h2>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-21T14:37:20+08:00"
-              content="2017-03-21" >
-          03-21
-        </time>
-      </div>
+      
+    </div>
 
-    </header>
+    <div>
+      
+        
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      王吕
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://blog.outyua.com/2017/php-codestype-psr.html" title="PHP代码风格 psr 标准">http://blog.outyua.com/2017/php-codestype-psr.html</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/learn-protocol-buffers-7.html" rel="next" title="Protocol Buffers学习（7）：编译protocol buffers">
+                <i class="fa fa-chevron-left"></i> Protocol Buffers学习（7）：编译protocol buffers
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/learning-php-trait-and-generater.html" rel="prev" title="关于PHP trait、生成器">
+                关于PHP trait、生成器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </article>
 
 
-    
-  </div>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
           
           </div>
@@ -304,6 +494,12 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yNzgxNi80Mzky"></div>
+    
+  </div>
+
 
         </div>
         
@@ -323,8 +519,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -397,6 +602,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#psr-1（基本风格）"><span class="nav-number">1.</span> <span class="nav-text">psr-1（基本风格）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#psr-2（严格的风格）"><span class="nav-number">2.</span> <span class="nav-text">psr-2（严格的风格）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#psr-3（日志记录器）"><span class="nav-number">3.</span> <span class="nav-text">psr-3（日志记录器）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#psr-4（自动加载）！！非常重要"><span class="nav-number">4.</span> <span class="nav-text">psr-4（自动加载）！！非常重要</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -518,6 +739,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
 
   
 

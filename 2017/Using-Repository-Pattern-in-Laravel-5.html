@@ -1,0 +1,837 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="laravel,php," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="翻译: https://bosnadev.com/2015/03/07/using-repository-pattern-in-laravel-5">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在 laravel5 中使用仓库设计模式">
+<meta property="og:url" content="http://blog.outyua.com/2017/Using-Repository-Pattern-in-Laravel-5.html">
+<meta property="og:site_name" content="OUTYUA">
+<meta property="og:description" content="翻译: https://bosnadev.com/2015/03/07/using-repository-pattern-in-laravel-5">
+<meta property="og:image" content="http://blog.outyua.com/images/post/repository_pattern.png">
+<meta property="og:image" content="http://blog.outyua.com/images/post/repository_directory_structure.png">
+<meta property="og:image" content="http://blog.outyua.com/images/post/concrete_repositories.png">
+<meta property="og:image" content="http://blog.outyua.com/images/post/criteria_structure.png">
+<meta property="og:updated_time" content="2017-09-08T13:38:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在 laravel5 中使用仓库设计模式">
+<meta name="twitter:description" content="翻译: https://bosnadev.com/2015/03/07/using-repository-pattern-in-laravel-5">
+<meta name="twitter:image" content="http://blog.outyua.com/images/post/repository_pattern.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.outyua.com/2017/Using-Repository-Pattern-in-Laravel-5.html"/>
+
+
+
+
+
+  <title> 在 laravel5 中使用仓库设计模式 | OUTYUA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-76047187-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">OUTYUA</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-protobuf">
+          <a href="/tags/Protocol-Buffers/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-file-code-o"></i> <br />
+            
+            Protocol Buffers
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://blog.outyua.com/2017/Using-Repository-Pattern-in-Laravel-5.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="王吕">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="OUTYUA">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                在 laravel5 中使用仓库设计模式
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-05T12:36:15+08:00">
+                2017-08-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>翻译: <a href="https://bosnadev.com/2015/03/07/using-repository-pattern-in-laravel-5" target="_blank" rel="external">https://bosnadev.com/2015/03/07/using-repository-pattern-in-laravel-5</a></p>
+</blockquote>
+<a id="more"></a>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>如果你真的理解了仓库模式, 那么你用什么框架或者编程语言都无所谓了, 当你真正理解了仓库模式的设计原则之后, 你就能用任何语言或者框架去实现它, 首先, 我们先看一下仓库模式的定义:</p>
+<blockquote>
+<p>仓库就像是业务内部的数据对象集合, 负责协调业务和数据映射层之间的关系, 客户端对象只需要构造一个清晰的查询请求, 然后提交给仓库就行了. 仓库里的对象可以通过客户端的请求进行增删改查, 客户端可以在某个场景下, 通过一个简单的对象集合或者仓库中映射的代码实现合适的操作.</p>
+<p>原文: A Repository mediates between the domain and data mapping layers, acting like an in-memory domain object collection. Client objects construct query specifications declaratively and submit them to Repository for satisfaction. Objects can be added to and removed from the Repository, as they can from a simple collection of objects, and the mapping code encapsulated by the Repository will carry out the appropriate operations behind the scenes.</p>
+</blockquote>
+<p>仓库模式把数据访问逻辑和业务逻辑中实体访问分开了, 数据访问逻辑和业务逻辑只能通过接口来进行数据操作.<br><img src="/images/post/repository_pattern.png" alt=""></p>
+<p>简单来说, 仓库模式就是一种存放数据访问逻辑的容器, 它向业务层屏蔽了数据访问逻辑的细节, 也可以这样理解, 在不清楚数据层设计结构的情况下, 我们也能按照业务逻辑来访问数据层.</p>
+<p>这样做(数据访问层和业务逻辑分离) 有很多好处:</p>
+<ul>
+<li>数据访问逻辑集中管理, 方便维护代码</li>
+<li>业务和数据访问逻辑可以分开测试</li>
+<li>减少重复代码</li>
+<li>减少编程中的错误</li>
+</ul>
+<h2 id="关于接口"><a href="#关于接口" class="headerlink" title="关于接口"></a>关于接口</h2><p>仓库模式就是接口, 接口就是一个协议, 协议说明某一个具体的类必须被实现. 我们仔细想一下, 现在我们有两个数据对象<code>Actor</code>和<code>Film</code>, 通常我们对这些对象都有哪些操作呢?</p>
+<ol>
+<li>获取所有记录</li>
+<li>获取分页记录</li>
+<li>添加一条记录</li>
+<li>根据主键获取记录</li>
+<li>根据其他属性获取记录</li>
+<li>更新记录</li>
+<li>删除记录</li>
+</ol>
+<p>如果我们对这两个数据对象都执行这些操作的话, 我们需要写好多重复的代码, 当然, 如果项目比较小的话, 是没有问题的, 但是当项目变得很大的时候, 就比较麻烦了.</p>
+<p>现在我们定义这些通用操作, 并且创建一个接口:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">RepositoryInterface</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">all</span><span class="params">($columns = array<span class="params">(<span class="string">'*'</span>)</span>)</span></span>;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">paginate</span><span class="params">($perPage = <span class="number">15</span>, $columns = array<span class="params">(<span class="string">'*'</span>)</span>)</span></span>;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">create</span><span class="params">(array $data)</span></span>;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">update</span><span class="params">(array $data, $id)</span></span>;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">delete</span><span class="params">($id)</span></span>;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">find</span><span class="params">($id, $columns = array<span class="params">(<span class="string">'*'</span>)</span>)</span></span>;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">findBy</span><span class="params">($field, $value, $columns = array<span class="params">(<span class="string">'*'</span>)</span>)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><p>在我们准备设计实现这个接口的仓库之前, 我们先考虑一下如何组织我们的代码, 通常, 我习惯把新功能做成一个<code>component</code>组件, 这样我以后就能重复使用这些代码, 例如这样的文件夹结构:<br><img src="/images/post/repository_directory_structure.png" alt=""></p>
+<p>当然, 你随便, 怎么着都行. 下面我按照我这个组织形式继续讲.</p>
+<p><code>src</code> 文件夹包含了 <code>Contracts</code>, <code>Eloquent</code>, <code>Exceptions</code> 这几个文件夹, 一看文件夹名就知道这几个文件夹放啥了. <code>Contracts</code> 放协议(接口文件), <code>Eloquent</code> 放实现了接口的仓库类, <code>Exceptions</code> 存放异常类</p>
+<p>顺便看一下 <code>composer.json</code> 文件的内容吧, 我直接照抄原作者的了<br><figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"name"</span>: <span class="string">"bosnadev/repositories"</span>,</div><div class="line">  <span class="attr">"description"</span>: <span class="string">"Laravel Repositories"</span>,</div><div class="line">  <span class="attr">"keywords"</span>: [</div><div class="line">    <span class="string">"laravel"</span>,</div><div class="line">    <span class="string">"repository"</span>,</div><div class="line">    <span class="string">"repositories"</span>,</div><div class="line">    <span class="string">"eloquent"</span>,</div><div class="line">    <span class="string">"database"</span></div><div class="line">  ],</div><div class="line">  <span class="attr">"licence"</span>: <span class="string">"MIT"</span>,</div><div class="line">  <span class="attr">"authors"</span>: [</div><div class="line">    &#123;</div><div class="line">      <span class="attr">"name"</span>: <span class="string">"Mirza Pasic"</span>,</div><div class="line">      <span class="attr">"email"</span>: <span class="string">"mirza.pasic@edu.fit.ba"</span></div><div class="line">    &#125;</div><div class="line">  ],</div><div class="line">  <span class="attr">"require"</span>: &#123;</div><div class="line">    <span class="attr">"php"</span>: <span class="string">"&gt;=5.4.0"</span>,</div><div class="line">    <span class="attr">"illuminate/support"</span>: <span class="string">"5.*"</span>,</div><div class="line">    <span class="attr">"illuminate/database"</span>: <span class="string">"5.*"</span></div><div class="line">  &#125;,</div><div class="line">  <span class="attr">"autoload"</span>: &#123;</div><div class="line">    <span class="attr">"psr-4"</span>: &#123;</div><div class="line">      <span class="attr">"Bosnadev\\Repositories\\"</span>: <span class="string">"src/"</span></div><div class="line">    &#125;</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">"autoload-dev"</span>: &#123;</div><div class="line">    <span class="attr">"psr-4"</span>: &#123;</div><div class="line">      <span class="attr">"Bosnadev\\Tests\\Repositories\\"</span>: <span class="string">"tests/"</span></div><div class="line">    &#125;</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">"extra"</span>: &#123;</div><div class="line">    <span class="attr">"branch-alias"</span>: &#123;</div><div class="line">      <span class="attr">"dev-master"</span>: <span class="string">"0.x-dev"</span></div><div class="line">    &#125;</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">"minimum-stability"</span>: <span class="string">"dev"</span>,</div><div class="line">  <span class="attr">"prefer-stable"</span>: <span class="literal">true</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>通过 <code>composer.json</code> 我们映射了 <code>src</code>的类到 命名空间<code>Bosnadev\Repository</code>, 所以接口文件的标准格式为:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span> <span class="keyword">namespace</span> <span class="title">Bosnadev</span>\<span class="title">Repositories</span>\<span class="title">Contracts</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">RepositoryInterface</span> </span>&#123;</div><div class="line"></div><div class="line">...</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>现在我们开始实现接口</p>
+<h2 id="实现接口"><a href="#实现接口" class="headerlink" title="实现接口"></a>实现接口</h2><p>使用仓库可以让我们查询数据, 建立业务实体和数据源之间的持续映射关系</p>
+<p><img src="/images/post/concrete_repositories.png" alt=""></p>
+<p>当然, 每一个子仓库都应该继承这个抽象的仓库(实现了接口). </p>
+<p>现在从接口第一个方法<code>all()</code>开始. 这个方法负责取出实体中的所有记录, 参数<code>$columns</code>是一个数组, 如果发送这个参数的话, 我们会取出<code>$columns</code>中指定的字段, 不传的话默认取出所有字段.<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">all</span><span class="params">($columns = array<span class="params">(<span class="string">'*'</span>)</span>)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;model-&gt;get($columns);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>然后我们设置<code>$this-&gt;model</code>属性为我们想要操作的数据对象, 来个抽象仓库类的完整案例:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span> <span class="keyword">namespace</span> <span class="title">Bosnadev</span>\<span class="title">Repositories</span>\<span class="title">Eloquent</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Bosnadev</span>\<span class="title">Repositories</span>\<span class="title">Contracts</span>\<span class="title">RepositoryInterface</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Bosnadev</span>\<span class="title">Repositories</span>\<span class="title">Exceptions</span>\<span class="title">RepositoryException</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Container</span>\<span class="title">Container</span> <span class="title">as</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Class Repository</div><div class="line"> * <span class="doctag">@package</span> Bosnadev\Repositories\Eloquent</div><div class="line"> */</div><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Repository</span> <span class="keyword">implements</span> <span class="title">RepositoryInterface</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@var</span> App</div><div class="line">     */</div><div class="line">    <span class="keyword">private</span> $app;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@var</span></div><div class="line">     */</div><div class="line">    <span class="keyword">protected</span> $model;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> App $app</div><div class="line">     * <span class="doctag">@throws</span> \Bosnadev\Repositories\Exceptions\RepositoryException</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(App $app)</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;app = $app;</div><div class="line">        <span class="keyword">$this</span>-&gt;makeModel();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Specify Model class name</div><div class="line">     * </div><div class="line">     * <span class="doctag">@return</span> mixed</div><div class="line">     */</div><div class="line">    <span class="keyword">abstract</span> <span class="function"><span class="keyword">function</span> <span class="title">model</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@return</span> Model</div><div class="line">     * <span class="doctag">@throws</span> RepositoryException</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">makeModel</span><span class="params">()</span> </span>&#123;</div><div class="line">        $model = <span class="keyword">$this</span>-&gt;app-&gt;make(<span class="keyword">$this</span>-&gt;model());</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (!$model <span class="keyword">instanceof</span> Model)</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RepositoryException(<span class="string">"Class &#123;$this-&gt;model()&#125; must be an instance of Illuminate\\Database\\Eloquent\\Model"</span>);</div><div class="line"></div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;model = $model;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>我们定一个这个抽象类之后, 现在我们实现一个具体的仓库类, 只需要实现 <code>model()</code>方法就行了<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span> <span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Repositories</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Bosnadev</span>\<span class="title">Repositories</span>\<span class="title">Contracts</span>\<span class="title">RepositoryInterface</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Bosnadev</span>\<span class="title">Repositories</span>\<span class="title">Eloquent</span>\<span class="title">Repository</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ActorRepository</span> <span class="keyword">extends</span> <span class="title">Repository</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Specify Model class name</div><div class="line">     *</div><div class="line">     * <span class="doctag">@return</span> mixed</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">model</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">'Bosnadev\Models\Actor'</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>现在实现接口中的其他方法:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span> <span class="keyword">namespace</span> <span class="title">Bosnadev</span>\<span class="title">Repositories</span>\<span class="title">Eloquent</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Bosnadev</span>\<span class="title">Repositories</span>\<span class="title">Contracts</span>\<span class="title">RepositoryInterface</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Bosnadev</span>\<span class="title">Repositories</span>\<span class="title">Exceptions</span>\<span class="title">RepositoryException</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Container</span>\<span class="title">Container</span> <span class="title">as</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Class Repository</div><div class="line"> * <span class="doctag">@package</span> Bosnadev\Repositories\Eloquent</div><div class="line"> */</div><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Repository</span> <span class="keyword">implements</span> <span class="title">RepositoryInterface</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@var</span> App</div><div class="line">     */</div><div class="line">    <span class="keyword">private</span> $app;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@var</span></div><div class="line">     */</div><div class="line">    <span class="keyword">protected</span> $model;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> App $app</div><div class="line">     * <span class="doctag">@throws</span> \Bosnadev\Repositories\Exceptions\RepositoryException</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(App $app)</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;app = $app;</div><div class="line">        <span class="keyword">$this</span>-&gt;makeModel();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Specify Model class name</div><div class="line">     *</div><div class="line">     * <span class="doctag">@return</span> mixed</div><div class="line">     */</div><div class="line">    <span class="keyword">abstract</span> <span class="function"><span class="keyword">function</span> <span class="title">model</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> array $columns</div><div class="line">     * <span class="doctag">@return</span> mixed</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">all</span><span class="params">($columns = array<span class="params">(<span class="string">'*'</span>)</span>)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;model-&gt;get($columns);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> int $perPage</div><div class="line">     * <span class="doctag">@param</span> array $columns</div><div class="line">     * <span class="doctag">@return</span> mixed</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">paginate</span><span class="params">($perPage = <span class="number">15</span>, $columns = array<span class="params">(<span class="string">'*'</span>)</span>)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;model-&gt;paginate($perPage, $columns);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> array $data</div><div class="line">     * <span class="doctag">@return</span> mixed</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">create</span><span class="params">(array $data)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;model-&gt;create($data);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> array $data</div><div class="line">     * <span class="doctag">@param</span> $id</div><div class="line">     * <span class="doctag">@param</span> string $attribute</div><div class="line">     * <span class="doctag">@return</span> mixed</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">update</span><span class="params">(array $data, $id, $attribute=<span class="string">"id"</span>)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;model-&gt;where($attribute, <span class="string">'='</span>, $id)-&gt;update($data);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> $id</div><div class="line">     * <span class="doctag">@return</span> mixed</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">delete</span><span class="params">($id)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;model-&gt;destroy($id);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> $id</div><div class="line">     * <span class="doctag">@param</span> array $columns</div><div class="line">     * <span class="doctag">@return</span> mixed</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">find</span><span class="params">($id, $columns = array<span class="params">(<span class="string">'*'</span>)</span>)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;model-&gt;find($id, $columns);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> $attribute</div><div class="line">     * <span class="doctag">@param</span> $value</div><div class="line">     * <span class="doctag">@param</span> array $columns</div><div class="line">     * <span class="doctag">@return</span> mixed</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">findBy</span><span class="params">($attribute, $value, $columns = array<span class="params">(<span class="string">'*'</span>)</span>)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;model-&gt;where($attribute, <span class="string">'='</span>, $value)-&gt;first($columns);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@return</span> \Illuminate\Database\Eloquent\Builder</div><div class="line">     * <span class="doctag">@throws</span> RepositoryException</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">makeModel</span><span class="params">()</span> </span>&#123;</div><div class="line">        $model = <span class="keyword">$this</span>-&gt;app-&gt;make(<span class="keyword">$this</span>-&gt;model());</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (!$model <span class="keyword">instanceof</span> Model)</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RepositoryException(<span class="string">"Class &#123;$this-&gt;model()&#125; must be an instance of Illuminate\\Database\\Eloquent\\Model"</span>);</div><div class="line"></div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;model = $model-&gt;newQuery();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>现在我们实现控制器试试<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span> <span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Repositories</span>\<span class="title">ActorRepository</span> <span class="title">as</span> <span class="title">Actor</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ActorsController</span> <span class="keyword">extends</span> <span class="title">Controller</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@var</span> Actor</div><div class="line">     */</div><div class="line">    <span class="keyword">private</span> $actor;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(Actor $actor)</span> </span>&#123;</div><div class="line"></div><div class="line">        <span class="keyword">$this</span>-&gt;actor = $actor;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> \Response::json(<span class="keyword">$this</span>-&gt;actor-&gt;all());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="标准查询方式"><a href="#标准查询方式" class="headerlink" title="标准查询方式"></a>标准查询方式</h2><p>刚刚只是一些简单的操作, 在大型项目中, 我们有可能会定义一些其他的复杂操作.</p>
+<p>为了实现这个, 我们要先顶一个抽象类, 用来扩展 repository 的查询能力.</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span> <span class="keyword">namespace</span> <span class="title">Bosnadev</span>\<span class="title">Repositories</span>\<span class="title">Criteria</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Bosnadev</span>\<span class="title">Repositories</span>\<span class="title">Contracts</span>\<span class="title">RepositoryInterface</span> <span class="title">as</span> <span class="title">Repository</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Bosnadev</span>\<span class="title">Repositories</span>\<span class="title">Contracts</span>\<span class="title">RepositoryInterface</span>;</div><div class="line"></div><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Criteria</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> $model</div><div class="line">     * <span class="doctag">@param</span> RepositoryInterface $repository</div><div class="line">     * <span class="doctag">@return</span> mixed</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="function"><span class="keyword">function</span> <span class="title">apply</span><span class="params">($model, Repository $repository)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这个方法是用来处理查询请求的, 现在我们要扩展 repository, 所以我们再定义一个接口文件:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span> <span class="keyword">namespace</span> <span class="title">Bosnadev</span>\<span class="title">Repositories</span>\<span class="title">Contracts</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Bosnadev</span>\<span class="title">Repositories</span>\<span class="title">Criteria</span>\<span class="title">Criteria</span>;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Interface CriteriaInterface</div><div class="line"> * <span class="doctag">@package</span> Bosnadev\Repositories\Contracts</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">CriteriaInterface</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> bool $status</div><div class="line">     * <span class="doctag">@return</span> $this</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">skipCriteria</span><span class="params">($status = true)</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@return</span> mixed</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getCriteria</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> Criteria $criteria</div><div class="line">     * <span class="doctag">@return</span> $this</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getByCriteria</span><span class="params">(Criteria $criteria)</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> Criteria $criteria</div><div class="line">     * <span class="doctag">@return</span> $this</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">pushCriteria</span><span class="params">(Criteria $criteria)</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@return</span> $this</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span>  <span class="title">applyCriteria</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>现在让 repository 类实现这个接口:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span> <span class="keyword">namespace</span> <span class="title">Bosnadev</span>\<span class="title">Repositories</span>\<span class="title">Eloquent</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Bosnadev</span>\<span class="title">Repositories</span>\<span class="title">Contracts</span>\<span class="title">CriteriaInterface</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Bosnadev</span>\<span class="title">Repositories</span>\<span class="title">Criteria</span>\<span class="title">Criteria</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Bosnadev</span>\<span class="title">Repositories</span>\<span class="title">Contracts</span>\<span class="title">RepositoryInterface</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Bosnadev</span>\<span class="title">Repositories</span>\<span class="title">Exceptions</span>\<span class="title">RepositoryException</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Database</span>\<span class="title">Eloquent</span>\<span class="title">Model</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">Collection</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Container</span>\<span class="title">Container</span> <span class="title">as</span> <span class="title">App</span>;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Class Repository</div><div class="line"> * <span class="doctag">@package</span> Bosnadev\Repositories\Eloquent</div><div class="line"> */</div><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Repository</span> <span class="keyword">implements</span> <span class="title">RepositoryInterface</span>, <span class="title">CriteriaInterface</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@var</span> App</div><div class="line">     */</div><div class="line">    <span class="keyword">private</span> $app;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@var</span></div><div class="line">     */</div><div class="line">    <span class="keyword">protected</span> $model;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@var</span> Collection</div><div class="line">     */</div><div class="line">    <span class="keyword">protected</span> $criteria;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@var</span> bool</div><div class="line">     */</div><div class="line">    <span class="keyword">protected</span> $skipCriteria = <span class="keyword">false</span>;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> App $app</div><div class="line">     * <span class="doctag">@param</span> Collection $collection</div><div class="line">     * <span class="doctag">@throws</span> \Bosnadev\Repositories\Exceptions\RepositoryException</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(App $app, Collection $collection)</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;app = $app;</div><div class="line">        <span class="keyword">$this</span>-&gt;criteria = $collection;</div><div class="line">        <span class="keyword">$this</span>-&gt;resetScope();</div><div class="line">        <span class="keyword">$this</span>-&gt;makeModel();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Specify Model class name</div><div class="line">     *</div><div class="line">     * <span class="doctag">@return</span> mixed</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="function"><span class="keyword">function</span> <span class="title">model</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> array $columns</div><div class="line">     * <span class="doctag">@return</span> mixed</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">all</span><span class="params">($columns = array<span class="params">(<span class="string">'*'</span>)</span>)</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;applyCriteria();</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;model-&gt;get($columns);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> int $perPage</div><div class="line">     * <span class="doctag">@param</span> array $columns</div><div class="line">     * <span class="doctag">@return</span> mixed</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">paginate</span><span class="params">($perPage = <span class="number">1</span>, $columns = array<span class="params">(<span class="string">'*'</span>)</span>)</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;applyCriteria();</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;model-&gt;paginate($perPage, $columns);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> array $data</div><div class="line">     * <span class="doctag">@return</span> mixed</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">create</span><span class="params">(array $data)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;model-&gt;create($data);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> array $data</div><div class="line">     * <span class="doctag">@param</span> $id</div><div class="line">     * <span class="doctag">@param</span> string $attribute</div><div class="line">     * <span class="doctag">@return</span> mixed</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">update</span><span class="params">(array $data, $id, $attribute=<span class="string">"id"</span>)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;model-&gt;where($attribute, <span class="string">'='</span>, $id)-&gt;update($data);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> $id</div><div class="line">     * <span class="doctag">@return</span> mixed</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">delete</span><span class="params">($id)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;model-&gt;destroy($id);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> $id</div><div class="line">     * <span class="doctag">@param</span> array $columns</div><div class="line">     * <span class="doctag">@return</span> mixed</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">find</span><span class="params">($id, $columns = array<span class="params">(<span class="string">'*'</span>)</span>)</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;applyCriteria();</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;model-&gt;find($id, $columns);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> $attribute</div><div class="line">     * <span class="doctag">@param</span> $value</div><div class="line">     * <span class="doctag">@param</span> array $columns</div><div class="line">     * <span class="doctag">@return</span> mixed</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">findBy</span><span class="params">($attribute, $value, $columns = array<span class="params">(<span class="string">'*'</span>)</span>)</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;applyCriteria();</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;model-&gt;where($attribute, <span class="string">'='</span>, $value)-&gt;first($columns);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@return</span> \Illuminate\Database\Eloquent\Builder</div><div class="line">     * <span class="doctag">@throws</span> RepositoryException</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">makeModel</span><span class="params">()</span> </span>&#123;</div><div class="line">        $model = <span class="keyword">$this</span>-&gt;app-&gt;make(<span class="keyword">$this</span>-&gt;model());</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (!$model <span class="keyword">instanceof</span> Model)</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RepositoryException(<span class="string">"Class &#123;$this-&gt;model()&#125; must be an instance of Illuminate\\Database\\Eloquent\\Model"</span>);</div><div class="line"></div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;model = $model-&gt;newQuery();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@return</span> $this</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">resetScope</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;skipCriteria(<span class="keyword">false</span>);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> bool $status</div><div class="line">     * <span class="doctag">@return</span> $this</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">skipCriteria</span><span class="params">($status = true)</span></span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;skipCriteria = $status;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@return</span> mixed</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getCriteria</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;criteria;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> Criteria $criteria</div><div class="line">     * <span class="doctag">@return</span> $this</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getByCriteria</span><span class="params">(Criteria $criteria)</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;model = $criteria-&gt;apply(<span class="keyword">$this</span>-&gt;model, <span class="keyword">$this</span>);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> Criteria $criteria</div><div class="line">     * <span class="doctag">@return</span> $this</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">pushCriteria</span><span class="params">(Criteria $criteria)</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;criteria-&gt;push($criteria);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@return</span> $this</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span>  <span class="title">applyCriteria</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;skipCriteria === <span class="keyword">true</span>)</div><div class="line">            <span class="keyword">return</span> <span class="keyword">$this</span>;</div><div class="line"></div><div class="line">        <span class="keyword">foreach</span>(<span class="keyword">$this</span>-&gt;getCriteria() <span class="keyword">as</span> $criteria) &#123;</div><div class="line">            <span class="keyword">if</span>($criteria <span class="keyword">instanceof</span> Criteria)</div><div class="line">                <span class="keyword">$this</span>-&gt;model = $criteria-&gt;apply(<span class="keyword">$this</span>-&gt;model, <span class="keyword">$this</span>);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="添加一些查询规则"><a href="#添加一些查询规则" class="headerlink" title="添加一些查询规则"></a>添加一些查询规则</h2><p>通过添加的标准查询, 我们能更容易的组织我们的代码, repository 也不至于会有一堆臃肿的代码</p>
+<p><img src="/images/post/criteria_structure.png" alt=""></p>
+<p>添加的查询规则文件<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span> <span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Repositories</span>\<span class="title">Criteria</span>\<span class="title">Films</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Bosnadev</span>\<span class="title">Repositories</span>\<span class="title">Contracts</span>\<span class="title">CriteriaInterface</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Bosnadev</span>\<span class="title">Repositories</span>\<span class="title">Contracts</span>\<span class="title">RepositoryInterface</span> <span class="title">as</span> <span class="title">Repository</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Bosnadev</span>\<span class="title">Repositories</span>\<span class="title">Contracts</span>\<span class="title">RepositoryInterface</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">LengthOverTwoHours</span> <span class="keyword">implements</span> <span class="title">CriteriaInterface</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@param</span> $model</div><div class="line">     * <span class="doctag">@param</span> RepositoryInterface $repository</div><div class="line">     * <span class="doctag">@return</span> mixed</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">apply</span><span class="params">($model, Repository $repository)</span></span></div><div class="line">    &#123;</div><div class="line">        $query = $model-&gt;where(<span class="string">'length'</span>, <span class="string">'&gt;'</span>, <span class="number">120</span>);</div><div class="line">        <span class="keyword">return</span> $query;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="在控制器中使用这些标准查询"><a href="#在控制器中使用这些标准查询" class="headerlink" title="在控制器中使用这些标准查询"></a>在控制器中使用这些标准查询</h2><p>有两种方式使用, 第一种:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span> <span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Repositories</span>\<span class="title">Criteria</span>\<span class="title">Films</span>\<span class="title">LengthOverTwoHours</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Repositories</span>\<span class="title">FilmRepository</span> <span class="title">as</span> <span class="title">Film</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FilmsController</span> <span class="keyword">extends</span> <span class="title">Controller</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@var</span> Film</div><div class="line">     */</div><div class="line">    <span class="keyword">private</span> $film;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(Film $film)</span> </span>&#123;</div><div class="line"></div><div class="line">        <span class="keyword">$this</span>-&gt;film = $film;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">$this</span>-&gt;film-&gt;pushCriteria(<span class="keyword">new</span> LengthOverTwoHours());</div><div class="line">        <span class="keyword">return</span> \Response::json(<span class="keyword">$this</span>-&gt;film-&gt;all());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>使用这种方法你能添加任意数量的标准查询规则, 但是如果你只想添加一个, 那么你可以使用这个方法<code>getByCriteria()</code>:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span> <span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Http</span>\<span class="title">Controllers</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Repositories</span>\<span class="title">Criteria</span>\<span class="title">Films</span>\<span class="title">LengthOverTwoHours</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Repositories</span>\<span class="title">FilmRepository</span> <span class="title">as</span> <span class="title">Film</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FilmsController</span> <span class="keyword">extends</span> <span class="title">Controller</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * <span class="doctag">@var</span> Film</div><div class="line">     */</div><div class="line">    <span class="keyword">private</span> $film;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(Film $film)</span> </span>&#123;</div><div class="line"></div><div class="line">        <span class="keyword">$this</span>-&gt;film = $film;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span> </span>&#123;</div><div class="line">        $criteria = <span class="keyword">new</span> LengthOverTwoHours();</div><div class="line">        <span class="keyword">return</span> \Response::json(<span class="keyword">$this</span>-&gt;film-&gt;getByCriteria($criteria)-&gt;all());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="安装这个包"><a href="#安装这个包" class="headerlink" title="安装这个包"></a>安装这个包</h2><p>在你的<code>composer.json</code> 文件中添加<code>&quot;bosnadev/repositories&quot;: &quot;0.*&quot;</code>, 然后运行<code>composer update</code>.</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在应用中使用 repository 设计模式有很多好处, 最基本的就是能减少你的代码量, 是你的代码更容易维护, 测试和扩展.</p>
+<p>从程序的设计架构角度来说, 你的控制器不需要知道你在哪儿存储的数据, 这些数据怎么来的, 这样是非常漂亮的结构.</p>
+<p>有一个 laravel 实现的包推荐一下, 可能大多数人都知道吧</p>
+<p><a href="https://github.com/andersao/l5-repository" target="_blank" rel="external">https://github.com/andersao/l5-repository</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      王吕
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://blog.outyua.com/2017/Using-Repository-Pattern-in-Laravel-5.html" title="在 laravel5 中使用仓库设计模式">http://blog.outyua.com/2017/Using-Repository-Pattern-in-Laravel-5.html</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/laravel/" rel="tag"># laravel</a>
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/learning-php-trait-and-generater.html" rel="next" title="关于PHP trait、生成器">
+                <i class="fa fa-chevron-left"></i> 关于PHP trait、生成器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/learn-mysql-1.html" rel="prev" title="MySQL架构和历史">
+                MySQL架构和历史 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yNzgxNi80Mzky"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="王吕" />
+          <p class="site-author-name" itemprop="name">王吕</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/outyua" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于接口"><span class="nav-number">2.</span> <span class="nav-text">关于接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#目录结构"><span class="nav-number">3.</span> <span class="nav-text">目录结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现接口"><span class="nav-number">4.</span> <span class="nav-text">实现接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标准查询方式"><span class="nav-number">5.</span> <span class="nav-text">标准查询方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加一些查询规则"><span class="nav-number">6.</span> <span class="nav-text">添加一些查询规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在控制器中使用这些标准查询"><span class="nav-number">7.</span> <span class="nav-text">在控制器中使用这些标准查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装这个包"><span class="nav-number">8.</span> <span class="nav-text">安装这个包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">9.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王吕</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+
+  
+
+</body>
+</html>
